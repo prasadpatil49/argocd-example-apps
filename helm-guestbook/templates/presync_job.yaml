@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello-job
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: hello
+          image: busybox
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Hello from Kubernetes Job"
+              echo "Current date is:"
+              date
+              sleep 10
+              echo "Job completed successfully"
